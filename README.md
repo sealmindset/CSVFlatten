@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# Description
+It allows a user to upload any standard format CSV file, process its data, flatten any nested JSON objects, remove duplicate rows, and download the processed CSV file.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Current version the output file is called `output.csv`
 
-## Available Scripts
+## How it works
+Here's a breakdown of how the code works:
 
-In the project directory, you can run:
+The code starts by importing required modules: React, useState from React, Papa for CSV parsing, and axios for HTTP requests.
+The code defines two utility functions: flattenProperties and mergeRow. These functions are used to flatten nested JSON objects and merge the flattened properties into the original row data.
+The CSVProcessor component is defined, which renders a simple user interface with an input element for file selection, a "Process CSV" button, and, upon processing, displays a message and a "Download Output CSV" button.
+Inside the CSVProcessor component, it initializes two states using the useState hook: inputFile and outputFileLink. The inputFile state is used to store the selected CSV file, while outputFileLink holds the URL of the processed CSV file that the user can download.
+The main processing logic occurs in the processCSV function. When the user clicks the "Process CSV" button, this function is executed. It reads the contents of the uploaded CSV file using FileReader and parses it using Papa.parse to get an array of rows.
+For each row in the CSV data, it checks if the row has a 'PROPERTIES' column. If so, it attempts to parse the JSON data in that column and flatten the properties using the flattenProperties function.
+After flattening the properties, it merges the flattened properties into the row using the mergeRow function and removes the 'PROPERTIES' column from the newRow.
+The function checks for duplicates by comparing the string representation of the rows and keeps only unique rows in the outputRows array.
+Once the processing is complete, it generates a new CSV string using Papa.unparse and creates a downloadable link for the processed CSV file using Blob and URL.createObjectURL. The link is then stored in the outputFileLink state.
+The handleFileChange function is used to update the inputFile state whenever the user selects a file.
+The downloadOutputCSV function is triggered when the user clicks the "Download Output CSV" button. It sends an HTTP GET request to the outputFileLink using axios, retrieves the processed CSV data, and generates a downloadable link for the user to download the file.
 
-### `npm start`
+# Setup
+To set up and run the code:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Ensure you have Node.js and npm (Node Package Manager) installed on your computer.
+Create a new React project or use an existing one. If you don't have a project, you can create one using create-react-app by running the following command in your terminal:
+```
+npx create-react-app my-csv-processor
+```
+Navigate to the project directory:
+```
+cd my-csv-processor
+```
+Install the required packages (papaparse and axios):
+```
+npm install papaparse axios
+```
+Replace the default src/App.js content with the provided code.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Run Test
+Run the React development server:
+```
+npm start
+```
+Open your web browser and go to http://localhost:3000 to view the CSV Processor application.
+Upload a CSV file, click "Process CSV," and once the processing is complete, the "Download Output CSV" button will appear. Click it to download the processed CSV file.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Note: Since this code uses some external libraries (papaparse and axios), make sure to install them before running the application. Also, be cautious while processing large CSV files, as the application might consume significant resources during the parsing and processing phases.
