@@ -11,7 +11,7 @@
     "csv-parser": "^3.0.0",
     "fs": "^0.0.1-security",
     "papaparse": "^5.4.1",
-    "postcss": "^8.4.27",
+    "postcss": "^8.4.31",
     "progress": "^2.0.3",
     "react": "^18.2.0",
     "react-circular-progressbar": "^2.1.0",
